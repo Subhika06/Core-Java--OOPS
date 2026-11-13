@@ -1,67 +1,55 @@
 
 import java.util.Scanner;
 
-abstract class Course {
-    double courseFee;
+abstract class Doctor {
+    double consultationCharge;
 
-    Course(double courseFee) {
-        this.courseFee = courseFee;
+    Doctor(double consultationCharge) {
+        this.consultationCharge = consultationCharge;
     }
 
-    abstract double calculateDiscount();
+    abstract String getDoctorType();
 
-    abstract String getCourseType();
-
-    double calculateFinalFee() {
-        return courseFee - calculateDiscount();
+    double calculateTotalBill(double testCharges) {
+        return consultationCharge;
     }
 }
 
-class ProgrammingCourse extends Course {
-    ProgrammingCourse(double fee) {
-        super(fee);
+class GeneralPhysician extends Doctor {
+    GeneralPhysician() {
+        super(500);
     }
 
     @Override
-    double calculateDiscount() {
-        return courseFee * 0.10;
-    }
-
-    @Override
-    String getCourseType() {
-        return "Programming";
+    String getDoctorType() {
+        return "General Physician";
     }
 }
 
-class DataScienceCourse extends Course {
-    DataScienceCourse(double fee) {
-        super(fee);
+class Specialist extends Doctor {
+    Specialist() {
+        super(1000);
     }
 
     @Override
-    double calculateDiscount() {
-        return courseFee * 0.15;
-    }
-
-    @Override
-    String getCourseType() {
-        return "Data Science";
+    String getDoctorType() {
+        return "Specialist";
     }
 }
 
-class CloudCourse extends Course {
-    CloudCourse(double fee) {
-        super(fee);
+class EmergencyDoctor extends Doctor {
+    EmergencyDoctor() {
+        super(1500);
     }
 
     @Override
-    double calculateDiscount() {
-        return courseFee * 0.05;
+    String getDoctorType() {
+        return "Emergency Doctor";
     }
 
     @Override
-    String getCourseType() {
-        return "Cloud";
+    double calculateTotalBill(double testCharges) {
+        return consultationCharge + testCharges;
     }
 }
 
@@ -69,23 +57,28 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        int courseType = sc.nextInt();
-        double fee = sc.nextDouble();
+        int doctorType = sc.nextInt();
+        double testCharges = sc.nextDouble();
 
-        Course course;
+        Doctor doctor;
 
-        if (courseType == 1) {
-            course = new ProgrammingCourse(fee);
-        } else if (courseType == 2) {
-            course = new DataScienceCourse(fee);
+        if (doctorType == 1) {
+            doctor = new GeneralPhysician();
+        } else if (doctorType == 2) {
+            doctor = new Specialist();
         } else {
-            course = new CloudCourse(fee);
+            doctor = new EmergencyDoctor();
         }
 
-        System.out.println("Course Type: " + course.getCourseType());
-        System.out.printf("Discount: %.2f%n", course.calculateDiscount());
-        System.out.printf("Final Fee: %.2f%n", course.calculateFinalFee());
+        System.out.println("Doctor Type: " + doctor.getDoctorType());
+        System.out.printf("Consultation Charge: %.2f%n",
+                doctor.consultationCharge);
+        System.out.printf("Test Charges: %.2f%n", testCharges);
+        System.out.printf("Total Bill: %.2f%n",
+                doctor.calculateTotalBill(testCharges));
 
         sc.close();
     }
 }
+
+
