@@ -1,0 +1,92 @@
+
+import java.util.Scanner;
+
+class Employee {
+    String employeeName;
+
+    Employee(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    double calculateBonus() {
+        return 0;
+    }
+
+    double calculateBonus(double amount) {
+        return amount * 0.03;
+    }
+}
+
+class TechnicalEmployee extends Employee {
+    double basicSalary;
+    int rating;
+
+    TechnicalEmployee(String name, double basicSalary, int rating) {
+        super(name);
+        this.basicSalary = basicSalary;
+        this.rating = rating;
+    }
+
+    @Override
+    double calculateBonus() {
+        return calculateBonus(basicSalary, rating);
+    }
+
+    double calculateBonus(double salary, int employeeRating) {
+        return salary * employeeRating * 2 / 100;
+    }
+}
+
+class SalesEmployee extends Employee {
+    double salesAmount;
+
+    SalesEmployee(String name, double salesAmount) {
+        super(name);
+        this.salesAmount = salesAmount;
+    }
+
+    @Override
+    double calculateBonus() {
+        return calculateBonus(salesAmount);
+    }
+
+    @Override
+    double calculateBonus(double amount) {
+        return amount * 0.03;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int type = sc.nextInt();
+        sc.nextLine();
+
+        Employee employee;
+        double earnings;
+
+        if (type == 1) {
+            String name = sc.nextLine();
+            double salary = sc.nextDouble();
+            int rating = sc.nextInt();
+
+            employee = new TechnicalEmployee(name, salary, rating);
+            earnings = salary;
+        } else {
+            String name = sc.nextLine();
+            double salesAmount = sc.nextDouble();
+
+            employee = new SalesEmployee(name, salesAmount);
+            earnings = salesAmount;
+        }
+
+        double bonus = employee.calculateBonus();
+
+        System.out.println("Employee Name: " + employee.employeeName);
+        System.out.printf("Bonus: %.2f%n", bonus);
+        System.out.printf("Total Earnings: %.2f%n", earnings + bonus);
+
+        sc.close();
+    }
+}
